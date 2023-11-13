@@ -3,8 +3,14 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+name: DotNetcore-CustomerApi-CI
 trigger:
-- master 
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - CustomerApi/*
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -16,20 +22,20 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    projects: '**/*.csproj'
+    projects: '**/CustomerApi*.csproj'
   displayName: 'Restore Nuget Package'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: '**/CustomerApi*.csproj'
     arguments: '--no-restore'
   displayName: 'Build Project'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '**/*.Test.csproj'
+    projects: '**/*Test.csproj'
     arguments: '--no-restore'
   displayName: 'Run Tests'
 
